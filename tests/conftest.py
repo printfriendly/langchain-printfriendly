@@ -59,9 +59,13 @@ def api() -> Iterator[respx.MockRouter]:
 
 
 @pytest.fixture(autouse=True)
-def waits(monkeypatch: pytest.MonkeyPatch) -> list[float]:
-    """Record every retry wait instead of sleeping."""
+def waits(
+    request: pytest.FixtureRequest, monkeypatch: pytest.MonkeyPatch
+) -> list[float]:
+    """Record every retry wait instead of sleeping. Live tests really sleep."""
     recorded: list[float] = []
+    if request.node.get_closest_marker("live"):
+        return recorded
 
     def fake_sleep(seconds: float) -> None:
         recorded.append(seconds)
@@ -75,6 +79,11 @@ def waits(monkeypatch: pytest.MonkeyPatch) -> list[float]:
 
 
 @pytest.fixture(autouse=True)
-def clean_env(monkeypatch: pytest.MonkeyPatch) -> None:
-    """Make sure a developer's real key never leaks into a unit test."""
+def clean_env(request: pytest.FixtureRequest, monkeypatch: pytest.MonkeyPatch) -> None:
+    """Make sure a developer's real key never leaks into a unit test.
+
+    Live tests are the one place the key is wanted, so they keep it.
+    """
+    if request.node.get_closest_marker("live"):
+        return
     monkeypatch.delenv("PRINTFRIENDLY_API_KEY", raising=False)

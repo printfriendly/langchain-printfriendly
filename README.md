@@ -45,9 +45,13 @@ docs = loader.load()
 print(docs[0].page_content[:200])
 print(docs[0].metadata)
 # {'source': 'https://en.wikipedia.org/wiki/Eclipse',
-#  'title': 'Eclipse',
+#  'title': 'Eclipse - Wikipedia',
 #  'site': 'en.wikipedia.org',
-#  'word_count': 6120}
+#  'author': 'Contributors to Wikimedia projects',
+#  'date': '2001-11-02',
+#  'excerpt': 'Totality during the solar eclipse of August 11, 1999, ...',
+#  'image': 'https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0d/Umbra01.svg/330px-Umbra01.svg.png?...',
+#  'word_count': 5097}
 ```
 
 Load lazily, one page at a time:

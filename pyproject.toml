@@ -107,4 +107,4 @@ markers = [
 ]
 
 [tool.codespell]
-skip = "uv.lock"
+skip = "uv.lock,.venv,.git,dist"

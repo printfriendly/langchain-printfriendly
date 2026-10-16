@@ -57,7 +57,9 @@ class PrintFriendlyLoader(BaseLoader):
         docs[0].page_content[:100]
         docs[0].metadata
         # {'source': 'https://en.wikipedia.org/wiki/Eclipse',
-        #  'title': 'Eclipse', 'site': 'en.wikipedia.org', 'word_count': 6120}
+        #  'title': 'Eclipse - Wikipedia', 'site': 'en.wikipedia.org',
+        #  'author': 'Contributors to Wikimedia projects', 'date': '2001-11-02',
+        #  'excerpt': '...', 'image': '...', 'word_count': 5097}
         ```
 
     Lazy load:

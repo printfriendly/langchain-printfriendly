@@ -96,6 +96,13 @@ async def test_ainvoke(api: respx.MockRouter) -> None:
     assert (await tool().ainvoke({"url": PAGE})).startswith("# Eclipse")
 
 
+async def test_async_options_are_sent(api: respx.MockRouter) -> None:
+    route = api.post("/v2/convert").respond(200, json=success_body(output="html"))
+    await tool(output="html", include_links=True).ainvoke({"url": PAGE})
+    sent = json.loads(route.calls.last.request.content)
+    assert sent == {"url": PAGE, "output": "html", "include_links": True}
+
+
 def test_max_characters_truncates_with_a_notice(api: respx.MockRouter) -> None:
     api.post("/v2/convert").respond(200, json=success_body("x" * 100))
     result = tool(max_characters=10).invoke({"url": PAGE})

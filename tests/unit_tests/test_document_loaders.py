@@ -282,3 +282,11 @@ async def test_async_retry_on_rate_limit(
     docs = await loader().aload()
     assert len(docs) == 1
     assert waits == [3.0]
+
+
+async def test_async_options_are_sent_to_the_api(api: respx.MockRouter) -> None:
+    route = api.post("/v2/convert").respond(200, json=success_body(output="text"))
+    docs = [d async for d in loader(output="text", include_links=True).alazy_load()]
+    assert len(docs) == 1
+    sent = json.loads(route.calls.last.request.content)
+    assert sent == {"url": PAGE, "output": "text", "include_links": True}
